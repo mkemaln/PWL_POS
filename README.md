@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://laravel.com" target="_blank"><img src="https://laravel.com/img/logomark.min.svg" width="100" alt="Laravel Logo"></a>
+    <a href="https://laravel.com" target="_blank"><img src="https://laravel.com/img/logomark.min.svg" width="100" alt="Laravel Logo" style="margin-right: 5px"></a>
     <a href="https://getbootstrap.com/" target="_blank"><img src="https://getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo.svg" width="100" alt="Bootstrap Logo"></a>
 </p>
 
