@@ -13,6 +13,11 @@
                 Manage Kategori
             </div>
             <div class="card-body">
+                <a href="/kategori/create">
+                    <div class="btn btn-success mb-2">
+                        + Tambah Kategori
+                    </div>
+                </a>
                 {{ $dataTable->table() }}
             </div>
         </div>
