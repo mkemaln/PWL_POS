@@ -31,4 +31,4 @@
         </div>
     </div>
 @endsection
-<div></div>
+<div>No div here</div>
