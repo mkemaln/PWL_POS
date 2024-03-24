@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserPostRequest;
 use App\Models\UserModel;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -22,8 +24,14 @@ class UserController extends Controller
         return view('user_tambah');
     }
 
-    public function tambah_simpan(Request $request)
+    public function tambah_simpan(UserPostRequest $request): RedirectResponse
     {
+        $validated = $request->validated();
+
+        $validated = $request->safe()->only(['username', 'nama', 'password', 'level_id']);
+        $validated = $request->safe()->except(['username', 'nama', 'password', 'level_id']);
+
+        // if the $validated were error, below this code wont be run, it is redirect from UserPostRequest
         UserModel::create([
             'username' => $request->username,
             'nama' => $request->nama,
