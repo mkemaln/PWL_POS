@@ -326,6 +326,11 @@ return [
         [
             'text' => 'Manage Kategori',
             'url' => 'kategori',
+            'icon' => 'fas fa-fw fa-list',
+        ],
+        [
+            'text' => 'Manage User',
+            'url' => 'm_user',
             'icon' => 'fas fa-fw fa-user',
         ],
         // [
