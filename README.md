@@ -10,6 +10,11 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+# P.S
+<ul>
+    <li>Starting Jobsheet 5 will get it own branch for easy controlling</li>
+    <li>The main branch wont get updated until the certain branch are finished</li>
+</ul>
 ## PWL POS
 Repository Made By Muhammad Kemal Nugraha
 
