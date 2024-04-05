@@ -695,7 +695,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/examples/blank.html" class="nav-link">
+                <a href="template/pages/examples/blank.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Blank Page</p>
                 </a>

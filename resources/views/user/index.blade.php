@@ -4,7 +4,7 @@
     <div class="card-header">
         <h3 class="card-title">{{ $page->title }}</h3>
         <div class="card-tools">
-            <a class="btn btn-sm btn-primary mt-1" href="{{ url('kategori/create')}}">Tambah</a>
+            <a class="btn btn-sm btn-primary mt-1" href="{{ url('user/create')}}">Tambah</a>
         </div>                          
     </div>
     <div class="card-body">
@@ -14,12 +14,29 @@
         @if (session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
-        <table class="table table-bordered table-striped table-hover table-sm" id="table_kategori">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="col-1 control-label col-form-label">Filter:</label>
+                    <div class="col-3">
+                        <select name="level_id" id="level_id" class="form-control" required>
+                            <option value="">- Semua -</option>
+                            @foreach ($level as $item)
+                                <option value="{{ $item->level_id }}">{{ $item->level_nama }}</option>
+                            @endforeach
+                        </select>
+                        <small class="form-text text-muted">Level Pengguna</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered table-striped table-hover table-sm" id="table_user">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Kode Kategori</th>
-                    <th>Nama Kategori</th>
+                    <th>Username</th>
+                    <th>Nama</th>
+                    <th>Level Pengguna</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -34,12 +51,15 @@
 @push('js')
 <script>
 $(document).ready(function() {
-    var datakategori = $('#table_kategori').DataTable({
+    var dataUser = $('#table_user').DataTable({
         serverSide: true, // serverSide: true, jika ingin menggunakan server side processing
         ajax: {
-            "url": "{{ url('kategori/list') }}",
+            "url": "{{ url('user/list') }}",
             "dataType": "json",
-            "type": "POST"
+            "type": "POST",
+            "data" : function (d) {
+                d.level_id = $('#level_id').val();
+            }
         },
         columns: [
             {
@@ -48,15 +68,20 @@ $(document).ready(function() {
                 orderable: false,
                 searchable: false
             },{
-                data: "kategori_kode",
+                data: "username",
                 className: "",
                 orderable: true, // orderable: true, jika ingin kolom ini bisa diurutkan
                 searchable: true // searchable: true, jika ingin kolom ini bisa dicari
             },{
-                data: "kategori_nama",
+                data: "nama",
                 className: "",
                 orderable: true, // orderable: true, jika ingin kolom ini bisa diurutkan
                 searchable: true // searchable: true, jika ingin kolom ini bisa dicari
+            },{
+                data: "level.level_nama",
+                className: "",
+                orderable: false, // orderable: true, jika ingin kolom ini bisa diurutkan
+                searchable: false // searchable: true, jika ingin kolom ini bisa dicari
             },{
                 data: "aksi",
                 className: "",
@@ -64,6 +89,10 @@ $(document).ready(function() {
                 searchable: false // searchable: true, jika ingin kolom ini bisa dicari
             }
         ]
+    });
+
+    $('#level_id').on('change', function(){
+        dataUser.ajax.reload();
     });
 });
 
