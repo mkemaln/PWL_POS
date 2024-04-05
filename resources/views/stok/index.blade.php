@@ -4,7 +4,7 @@
     <div class="card-header">
         <h3 class="card-title">{{ $page->title }}</h3>
         <div class="card-tools">
-            <a class="btn btn-sm btn-primary mt-1" href="{{ url('user/create')}}">Tambah</a>
+            <a class="btn btn-sm btn-primary mt-1" href="{{ url('stok/create')}}">Tambah</a>
         </div>                          
     </div>
     <div class="card-body">
@@ -19,24 +19,25 @@
                 <div class="form-group row">
                     <label class="col-1 control-label col-form-label">Filter:</label>
                     <div class="col-3">
-                        <select name="level_id" id="level_id" class="form-control" required>
+                        <select name="user_id" id="user_id" class="form-control" required>
                             <option value="">- Semua -</option>
-                            @foreach ($level as $item)
-                                <option value="{{ $item->level_id }}">{{ $item->level_nama }}</option>
+                            @foreach ($user as $item)
+                                <option value="{{ $item->user_id }}">{{ $item->username }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">Level Pengguna</small>
+                        <small class="form-text text-muted">User Submitter</small>
                     </div>
                 </div>
             </div>
         </div>
-        <table class="table table-bordered table-striped table-hover table-sm" id="table_user">
+        <table class="table table-bordered table-striped table-hover table-sm" id="table_stok">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Username</th>
-                    <th>Nama</th>
-                    <th>Level Pengguna</th>
+                    <th>Nama Barang</th>
+                    <th>Tanggal Penyetokan</th>
+                    <th>Jumlah Stok Barang</th>
+                    <th>Submitter</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -51,53 +52,60 @@
 @push('js')
 <script>
 $(document).ready(function() {
-    var dataUser = $('#table_user').DataTable({
+    var dataStok = $('#table_stok').DataTable({
         serverSide: true, // serverSide: true, jika ingin menggunakan server side processing
         ajax: {
-            "url": "{{ url('user/list') }}",
+            "url": "{{ url('stok/list') }}",
             "dataType": "json",
-            "type": "POST",
-            "data" : function (d) {
-                d.level_id = $('#level_id').val();
-            }
+            "type": "POST"
+            // "data": function(k) {
+            //     k.user_id = $('#user_id').val();
+            // }
         },
+        columnDefs: [{
+            "defaultContent": "-",
+            "targets": "_all"
+        }],
         columns: [
             {
                 data: "DT_RowIndex", // nomor urut dari laravel datatable addIndexColumn()
                 className: "text-center",
                 orderable: false,
                 searchable: false
-            },{
-                data: "username",
+            },
+            {
+                data: "barang.barang_nama",
+                className: "",
+                orderable: true, // orderable: true, jika ingin kolom ini bisa diurutkan
+                searchable: true // searchable: true, jika ingin kolom ini bisa dicari
+            },
+            {
+                data: "stok_tanggal",
                 className: "",
                 orderable: true, // orderable: true, jika ingin kolom ini bisa diurutkan
                 searchable: true // searchable: true, jika ingin kolom ini bisa dicari
             },{
-                data: "nama",
+                data: "stok_jumlah",
                 className: "",
                 orderable: true, // orderable: true, jika ingin kolom ini bisa diurutkan
                 searchable: true // searchable: true, jika ingin kolom ini bisa dicari
             },{
-                data: "level.level_nama",
+                data: "user.username",
                 className: "",
-                orderable: false, // orderable: true, jika ingin kolom ini bisa diurutkan
-                searchable: false // searchable: true, jika ingin kolom ini bisa dicari
+                orderable: true, // orderable: true, jika ingin kolom ini bisa diurutkan
+                searchable: true // searchable: true, jika ingin kolom ini bisa dicari
             },{
                 data: "aksi",
                 className: "",
                 orderable: false, // orderable: true, jika ingin kolom ini bisa diurutkan
                 searchable: false // searchable: true, jika ingin kolom ini bisa dicari
-            }
+            },
         ]
     });
 
-    $('#level_id').on('change', function(){
-        dataUser.ajax.reload();
+    $('#user_id').on('change', function(){
+        dataStok.ajax.reload();
     });
-});
-
-$(document).ready(function() {
-    $('.sidebar-toggle-btn').PushMenu(options);
 });
 
 </script>

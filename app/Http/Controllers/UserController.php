@@ -134,7 +134,7 @@ class UserController extends Controller
     {
         $request->validate([
             //aturan
-            'username' => 'required|string|min:3|unique:m_user,username',   // harus ada, harus string, minimal 3 karakter, harus beda dari yg sudah ada
+            'username' => 'required|string|min:3|unique:m_user,username,'.$id.',user_id',   // harus ada, harus string, minimal 3 karakter, harus beda dari yg sudah ada
             'nama' => 'required|string|max:100',    // harus ada, harus string, max 100 chara
             'password' => 'nullable|min:5',         // harus ada, minimmal 5 chara
             'level_id' => 'required|integer'        // harus ada, harus integer (pake option)
