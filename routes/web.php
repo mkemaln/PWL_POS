@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\POSController;
 use App\Http\Controllers\StokController;
@@ -8,6 +10,7 @@ use App\Http\Controllers\LevelController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\PenjualanController;
 
 /*
@@ -116,3 +119,20 @@ Route::group(['prefix' => 'penjualan'], function () {
     Route::get('/{id}', [PenjualanController::class, 'show']);
 });
 
+// login auth route
+Route::get('login', [AuthController::class, 'index'])->name('login');
+Route::get('register', [AuthController::class, 'register'])->name('register');
+Route::post('proses_login', [AuthController::class, 'proses_login'])->name('proses_login');
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('proses_register', [AuthController::class, 'proses_register'])->name('proses_register');
+
+// diatur menggunakan middleware, 
+// dimana bila ingin login admin akan dibawa ke admincontroller
+// sebaliknya dengan manager
+Route::group(['middleware' => ['cek_login:1']], function(){
+    Route::resource('admin', AdminController::class);
+});
+Route::group(['middleware' => ['cek_login:2']], function(){
+    Route::resource('manager', ManagerController::class);
+});
+// end login auth route

@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use App\Models\StokModel;
 use App\Models\LevelModel;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 
-class UserModel extends Model
+class UserModel extends Model implements Authenticatable
 {
-    use HasFactory;
+    use HasFactory, AuthenticatableTrait;
 
     protected $table = 'm_user';
     protected $primaryKey = 'user_id';
@@ -22,9 +23,4 @@ class UserModel extends Model
     {
         return $this->belongsTo(LevelModel::class, 'level_id', 'level_id');
     }
-    
-    // public function stok(): HasMany
-    // {
-    //     return $this->hasMany(StokModel::class, 'user_id', 'usr_id');
-    // }
 }
