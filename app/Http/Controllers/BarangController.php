@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\BarangModel;
 use Illuminate\Http\Request;
 use App\Models\KategoriModel;
-use Yajra\DataTables\DataTables;
 use Illuminate\Routing\Controller;
+use Yajra\DataTables\Facades\DataTables;
 
 class BarangController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         $breadcrumb = (object) [
@@ -51,7 +54,9 @@ class BarangController extends Controller
             ->make(true);
     }
 
-
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
         $breadcrumb = (object) [
@@ -66,58 +71,65 @@ class BarangController extends Controller
         $kategori = KategoriModel::all();
         $activeMenu = 'barang';
 
-        return view('barang.create', ['breadcrumb' => $breadcrumb, 'kategori' => $kategori,'page' => $page, 'activeMenu' => $activeMenu]);
+        return view('barang.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'kategori' => $kategori, 'activeMenu' => $activeMenu]);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $request->validate([
-            //aturan
+            'kode' => 'required|string|min:3|unique:m_barang,barang_kode',
+            'nama' => 'required|string|max:100',
             'kategori_id' => 'required|integer',
-            'barang_kode' => 'required|string|min:3|max:10|unique:m_barang,barang_kode',   // harus ada, harus string, minimal 3 karakter, harus beda dari yg sudah ada
-            'barang_nama' => 'required|string|max:100',    // harus ada, harus string, max 100 chara
             'harga_beli' => 'required|integer',
-            'harga_jual' => 'required|integer',
+            'harga_jual' => 'required|integer'
         ]);
 
         BarangModel::create([
+            'barang_kode' => $request->kode,
+            'barang_nama' => $request->nama,
             'kategori_id' => $request->kategori_id,
-            'barang_kode' => $request->barang_kode,
-            'barang_nama' => $request->barang_nama,
             'harga_beli' => $request->harga_beli,
             'harga_jual' => $request->harga_jual,
         ]);
 
-        return redirect('/barang')->with('success', 'Data barang berhasil disimpan ');
+        return redirect('/barang')->with('success', 'Data barang berhasil disimpan');
     }
 
+    /**
+     * Display the specified resource.
+     */
     public function show(string $id)
     {
         $barang = BarangModel::with('kategori')->find($id);
-        $kategori = KategoriModel::all();
 
         $breadcrumb = (object) [
-            'title' => 'Detail Barang',
+            'title' => 'Daftar Barang',
             'list' => ['Home', 'Barang', 'Detail']
         ];
 
         $page = (object) [
-            'title' => 'Detail barang'
+            'title' => 'Detail Barang'
         ];
 
         $activeMenu = 'barang';
 
-        return view('barang.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'barang' => $barang, 'activeMenu' => $activeMenu]);        
+        return view('barang.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'barang' => $barang, 'activeMenu' => $activeMenu]);
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit(string $id)
     {
         $barang = BarangModel::find($id);
         $kategori = KategoriModel::all();
 
         $breadcrumb = (object) [
-            'title' => 'Edit barang',
-            'list' => ['Home', 'barang', 'Edit']
+            'title' => 'Edit Barang',
+            'list' => ['Home', 'Barang', 'Edit']
         ];
 
         $page = (object) [
@@ -126,35 +138,39 @@ class BarangController extends Controller
 
         $activeMenu = 'barang';
 
-        return view('barang.edit', ['breadcrumb' => $breadcrumb, 'page' => $page, 'kategori' => $kategori, 'barang' => $barang, 'activeMenu' => $activeMenu]);
+        return view('barang.edit', ['breadcrumb' => $breadcrumb, 'page' => $page, 'barang' => $barang, 'kategori' => $kategori, 'activeMenu' => $activeMenu]);
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, string $id)
     {
         $request->validate([
-            //aturan
+            'kode' => 'required|string|min:3',
+            'nama' => 'required|string|max:100',
             'kategori_id' => 'required|integer',
-            'barang_kode' => 'required|string|min:3|max:10|unique:m_barang,barang_kode,'.$id.',barang_id',   // harus ada, harus string, minimal 3 karakter, harus beda dari yg sudah ada
-            'barang_nama' => 'required|string|max:100',    // harus ada, harus string, max 100 chara
             'harga_beli' => 'required|integer',
-            'harga_jual' => 'required|integer',
+            'harga_jual' => 'required|integer'
         ]);
 
         BarangModel::find($id)->update([
+            'barang_kode' => $request->kode,
+            'barang_nama' => $request->nama,
             'kategori_id' => $request->kategori_id,
-            'barang_kode' => $request->barang_kode,
-            'barang_nama' => $request->barang_nama,
             'harga_beli' => $request->harga_beli,
             'harga_jual' => $request->harga_jual,
         ]);
 
-        return redirect('/barang')->with('success', 'Data barang berhasil disimpan ');
+        return redirect('/barang')->with('success', 'Data barang berhasil diubah');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(string $id)
     {
         $check = BarangModel::find($id);
-        // apabila di $check tidak ada datanya
         if (!$check) {
             return redirect('/barang')->with('error', 'Data barang tidak ditemukan');
         }
@@ -164,8 +180,6 @@ class BarangController extends Controller
 
             return redirect('/barang')->with('success', 'Data barang berhasil dihapus');
         } catch (\Illuminate\Database\QueryException $e) {
-
-            // Jika terjadi error saat menghapus data
             return redirect('/barang')->with('error', 'Data barang gagal dihapus karena masih terdapat tabel lain yang terkait dengan data ini');
         }
     }

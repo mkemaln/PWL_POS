@@ -79,6 +79,13 @@ class PenjualanController extends Controller
         $penjualan = PenjualanModel::with(['user', 'detail'])
                     ->find($id);
 
+    //     $penjualan = PenjualanModel::with(['user', 'detail'])
+    // ->where('penjualan_id', $id)
+    // ->whereHas('user')
+    // ->whereHas('detail')
+    // ->get();
+
+
         $breadcrumb = (object) [
             'title' => 'Daftar Penjualan',
             'list' => ['Home', 'Penjualan', 'Detail']
