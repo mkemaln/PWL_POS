@@ -1,27 +1,15 @@
-@extends('layouts.app')
+@extends('layouts.template')
 
-{{-- Cuztomize layout sections --}}
+@section('content')
+    
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Halo, apakabar!!</h3>
+      <div class="card-tools"></div>
+    </div>
+    <div class="card-body">
+      Selamat Datang semua, ini adalah halaman utama dari aplikasi ini.
+    </div>
+  </div>
 
-@section('subtitle', 'welcome')
-@section('content_header_title', 'Home')
-@section('content_header_subtitle', 'Welcome')
-
-{{-- Content body: main page content --}}
-
-@section('content_body')
-    <p>Welcome to this beatiful admin panel</p>
 @endsection
-
-{{-- Push extra css --}}
-
-@push('css')
-    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
-@endpush
-
-{{-- Push extra script --}}
-
-@push('js')
-    <script>
-        console.log("Hi, im using laravel adminLTE package!");
-    </script>
-@endpush
