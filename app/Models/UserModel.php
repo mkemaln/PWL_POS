@@ -14,6 +14,14 @@ class UserModel extends Model implements Authenticatable
 {
     use HasFactory, AuthenticatableTrait;
 
+    public function getJWTIdentifer(){
+        return $this->getKey();
+    }
+
+    public function getJWTCustomerClaims(){
+        return [];
+    }
+
     protected $table = 'm_user';
     protected $primaryKey = 'user_id';
 
