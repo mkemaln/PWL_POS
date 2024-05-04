@@ -34,8 +34,6 @@ class LoginController extends Controller
             ], 401);
         }
 
-        Log::info('Authenticated User:', auth()->user());
-
         // if auth success
         return response()->json([
             'success' => true,
