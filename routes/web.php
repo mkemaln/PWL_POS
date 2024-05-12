@@ -1,17 +1,18 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\POSController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\FileUploadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,3 +137,8 @@ Route::group(['middleware' => ['cek_login:2']], function(){
     Route::resource('manager', ManagerController::class);
 });
 // end login auth route
+
+// file upload route
+Route::get('/file-upload', [FileUploadController::class, 'fileUpload']);
+Route::post('/file-upload', [FileUploadController::class, 'prosesFileUpload']);
+
