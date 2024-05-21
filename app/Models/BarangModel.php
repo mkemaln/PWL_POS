@@ -13,17 +13,24 @@ class BarangModel extends Model
     protected $table = 'm_barang';
     protected $primaryKey = 'barang_id';
 
-    protected $fillable = ['kategori_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual', 'image'];
+    protected $fillable = [
+        'barang_kode', 
+        'barang_nama', 
+        'kategori_id', 
+        'harga_beli', 
+        'harga_jual',
+        'image'
+    ];
 
     public function kategori(): BelongsTo
     {
         return $this->belongsTo(KategoriModel::class, 'kategori_id', 'kategori_id');
-    } 
-    
-    protected function image(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($image) => url('/storage/posts/' . $image),
-        );
     }
+    
+    // protected function image(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn ($image) => url('/storage/posts/' . $image),
+    //     );
+    // }
 }

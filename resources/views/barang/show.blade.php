@@ -16,6 +16,10 @@
             @else
             <table class="table table-bordered table-striped table-hover tablesm">
                 <tr>
+                    <th>Gambar</th>
+                    <td><img src="{{ $barang->image }}" alt=""></td>
+                </tr>
+                <tr>
                     <th>ID</th>
                     <td>{{ $barang->barang_id }}</td>
                 </tr>

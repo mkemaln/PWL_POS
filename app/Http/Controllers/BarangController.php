@@ -80,19 +80,27 @@ class BarangController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode' => 'required|string|min:3|unique:m_barang,barang_kode',
-            'nama' => 'required|string|max:100',
+            'barang_kode' => 'required|string|min:3|unique:m_barang,barang_kode',
+            'barang_nama' => 'required|string|max:100',
             'kategori_id' => 'required|integer',
             'harga_beli' => 'required|integer',
-            'harga_jual' => 'required|integer'
+            'harga_jual' => 'required|integer',
+            'berkas' => 'required'
         ]);
 
+        $extFile = $request->berkas->extension();
+        $nama = $request->barang_kode . " - " . $request->barang_nama . ".$extFile";
+        $path = $request->berkas->move('gambar', $nama);
+        $path = str_replace("\\", "//", $path);
+        $pathBaru = asset('gambar/' . $nama);
+
         BarangModel::create([
-            'barang_kode' => $request->kode,
-            'barang_nama' => $request->nama,
+            'barang_kode' => $request->barang_kode,
+            'barang_nama' => $request->barang_nama,
             'kategori_id' => $request->kategori_id,
             'harga_beli' => $request->harga_beli,
             'harga_jual' => $request->harga_jual,
+            'image' => $pathBaru,
         ]);
 
         return redirect('/barang')->with('success', 'Data barang berhasil disimpan');
@@ -151,7 +159,7 @@ class BarangController extends Controller
             'nama' => 'required|string|max:100',
             'kategori_id' => 'required|integer',
             'harga_beli' => 'required|integer',
-            'harga_jual' => 'required|integer'
+            'harga_jual' => 'required|integer',
         ]);
 
         BarangModel::find($id)->update([
@@ -182,5 +190,24 @@ class BarangController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect('/barang')->with('error', 'Data barang gagal dihapus karena masih terdapat tabel lain yang terkait dengan data ini');
         }
+    }
+
+    public function prosesFileUpload(Request $request){
+        $request->validate([
+            'berkas' => 'required|file|image|max:500'
+        ]);
+        $extFile = $request->berkas->getClientOriginalName();
+        $namaFile = 'web-'.time().".".$extFile;
+        
+        $path = $request->berkas->move('gambar', $namaFile);
+        $path = str_replace("\\", "//", $path);
+        echo "Variabel path berisi: $path <br>";
+        $pathBaru = asset('gambar/'.$namaFile);
+
+        echo "proses upload berhasil. file berada di: $path";
+        echo '<br>';
+        echo "Tampilkan link:<a href='$pathBaru'>$pathBaru</a>";
+
+        
     }
 }
